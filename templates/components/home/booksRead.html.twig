@@ -36,52 +36,39 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% for bookRead in booksRead %}
+                        {% set book = books[bookRead.getBookId()] %}
                     <tr>
                         <td>
                             <div class="flex flex-col gap-2">
-                                <a class="leading-none font-medium text-sm text-gray-900 hover:text-primary"
-                                   href="#">
-                                    Le Moine qui vendit sa Ferrari
+                                <a class="leading-none font-medium text-sm text-gray-900 hover:text-primary" href="#">
+                                    {{ book.name }}
                                 </a>
                                 <span class="text-2sm text-gray-700 font-normal leading-3">
-                                    Un conte sur la quête du bonheur et du succès intérieur.
+                                    {{ book.description }}
                                 </span>
                             </div>
                         </td>
-                        <td>Spiritualité</td>
+                        <td>{{ book.category.name }}</td>
                         <td>
                             <div class="rating">
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
+                                {% for i in 1..5 %}
+                                    <div class="rating-label {% if i <= bookRead.getRating() %}checked{% endif %}">
+                                        <i class="rating-on ki-solid ki-star text-base leading-none"></i>
+                                        <i class="rating-off ki-outline ki-star text-base leading-none"></i>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </td>
                     </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
             <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
                 <div class="flex items-center gap-2 order-2 md:order-1">
                     Show
-                    <select class="select select-sm w-16"
-                            data-datatable-size="true" name="perpage">
+                    <select class="select select-sm w-16" data-datatable-size="true" name="perpage">
                     </select>
                     per page
                 </div>
