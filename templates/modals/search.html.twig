@@ -41,27 +41,39 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const searchInput = document.querySelector('input[name="query"]'); 
-        const bookContainer = document.querySelector("#book-container"); 
-        const hiddenContainer = document.querySelector(".hidden-items"); 
+        const searchInput = document.querySelector('input[name="query"]');
+        const bookContainer = document.querySelector("#book-container");
+        const hiddenContainer = document.querySelector(".hidden-items");
 
-        searchInput.addEventListener("input", () => {
+        const filterBooks = () => {
             const query = searchInput.value.toLowerCase().trim();
             const bookItems = [...bookContainer.children, ...hiddenContainer.children];
 
-            bookItems.forEach(item => {
-                const bookNameElement = item.querySelector(".text-sm"); 
-                const bookDescriptionElement = item.querySelector(".text-2sm");
+            if (query === "") {
+                bookItems.forEach(item => {
+                    hiddenContainer.appendChild(item); 
+                });
+            } else {
+                bookItems.forEach(item => {
+                    const bookNameElement = item.querySelector(".text-sm"); 
+                    const bookDescriptionElement = item.querySelector(".text-2sm"); 
 
-                const bookName = bookNameElement ? bookNameElement.textContent.toLowerCase() : "";
-                const bookDescription = bookDescriptionElement ? bookDescriptionElement.textContent.toLowerCase() : "";
+                    const bookName = bookNameElement ? bookNameElement.textContent.toLowerCase() : "";
+                    const bookDescription = bookDescriptionElement ? bookDescriptionElement.textContent.toLowerCase() : "";
 
-                if (bookName.includes(query) || bookDescription.includes(query)) {
-                    bookContainer.appendChild(item); 
-                } else {
-                    hiddenContainer.appendChild(item);
-                }
-            });
-        });
+                    if (bookName.includes(query) || bookDescription.includes(query)) {
+                        bookContainer.appendChild(item); 
+                    } else {
+                        hiddenContainer.appendChild(item); 
+                    }
+                });
+            }
+        };
+
+        filterBooks();
+
+        searchInput.addEventListener("input", filterBooks);
     });
-</script>
+
+
+</script> 
