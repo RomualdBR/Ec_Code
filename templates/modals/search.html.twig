@@ -1,0 +1,67 @@
+<div class="modal" data-modal="true" id="search_modal">
+    <div class="modal-content max-w-[600px] top-[15%]">
+        <div class="modal-header py-4 px-5">
+            <i class="ki-filled ki-magnifier text-gray-700 text-xl"></i>
+            <input class="input px-0 border-none bg-transparent shadow-none ms-2.5" name="query"
+                   placeholder="Rechercher..." type="text" value=""/>
+            <button class="btn btn-sm btn-icon btn-light btn-clear shrink-0" data-modal-dismiss="true">
+                <i class="ki-filled ki-cross"></i>
+            </button>
+        </div>
+        <div class="modal-body p-0 pb-5">
+            <div class="scrollable-y-auto" data-scrollable="true" data-scrollable-max-height="auto"
+                 data-scrollable-offset="300px">
+                <div class="menu menu-default p-0 flex-col">
+                    <div class="grid gap-1" id="book-container">
+                        {% for book in allbooks %}
+                        <div class="menu-item">
+                            <div class="menu-link flex justify-between gap-2">
+                                <div class="flex items-center gap-2.5">
+                                    <img alt="Cover" class="rounded-full size-9 shrink-0" src="" />
+                                    <div class="flex flex-col">
+                                        <a class="text-sm font-semibold text-gray-900 hover:text-primary-active mb-px"
+                                           href="#">
+                                            {{ book.name }}
+                                        </a>
+                                        <span class="text-2sm font-normal text-gray-500">
+                                            {{ book.description }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hidden-items" style="display: none;"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.querySelector('input[name="query"]'); 
+        const bookContainer = document.querySelector("#book-container"); 
+        const hiddenContainer = document.querySelector(".hidden-items"); 
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.toLowerCase().trim();
+            const bookItems = [...bookContainer.children, ...hiddenContainer.children];
+
+            bookItems.forEach(item => {
+                const bookNameElement = item.querySelector(".text-sm"); 
+                const bookDescriptionElement = item.querySelector(".text-2sm");
+
+                const bookName = bookNameElement ? bookNameElement.textContent.toLowerCase() : "";
+                const bookDescription = bookDescriptionElement ? bookDescriptionElement.textContent.toLowerCase() : "";
+
+                if (bookName.includes(query) || bookDescription.includes(query)) {
+                    bookContainer.appendChild(item); 
+                } else {
+                    hiddenContainer.appendChild(item);
+                }
+            });
+        });
+    });
+</script>
