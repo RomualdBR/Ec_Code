@@ -53,12 +53,25 @@ class HomeController extends AbstractController
             }
         }
 
+        $categoryCounts = [];
+        foreach ($allbooks as $dataRadar) {
+            $categoryName = $dataRadar->getCategory()->getName();
+            if (!isset($categoryCounts[$categoryName])) {
+                $categoryCounts[$categoryName] = 0;
+            }
+            $categoryCounts[$categoryName]++;
+        }
+        $categories = array_keys($categoryCounts);
+        $dataPoints = array_values($categoryCounts);
+
         return $this->render('pages/home.html.twig', [
             'allbooks' => $allbooks,
             'books' => $book,
             'booksReading' => $booksReading,
             'booksRead' => $booksRead,
             'name' => 'Accueil',
+            'categories' => $categories, 
+            'dataPoints' => $dataPoints,
         ]);
     }
 
